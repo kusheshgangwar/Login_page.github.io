@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Animated Login Page</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/@tailwindcss/forms"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <style>
+    /* Animated Gradient Background */
+    body {
+      background: linear-gradient(-45deg, #1a1c2b, #232946, #3c3f58, #141620);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    /* Floating particles */
+    .particle {
+      position: absolute;
+      width: 6px;
+      height: 6px;
+      background: rgba(255, 255, 255, 0.4);
+      border-radius: 50%;
+      animation: float 10s linear infinite;
+    }
+    @keyframes float {
+      from { transform: translateY(100vh) scale(0.5); opacity: 0; }
+      to { transform: translateY(-10vh) scale(1.2); opacity: 1; }
+    }
+  </style>
+</head>
+<body class="h-screen flex items-center justify-center overflow-hidden">
+
+  <!-- Floating particles -->
+  <div id="particles"></div>
+
+  <!-- Login Card -->
+  <div id="card" class="w-full max-w-md bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl p-8 transform scale-90 opacity-0">
+    <h2 class="text-3xl font-bold text-center text-white mb-6">Welcome Back</h2>
+    
+    <form id="loginForm" class="space-y-5">
+      <!-- Email -->
+      <div>
+        <label class="block text-white text-sm mb-1">Email</label>
+        <input type="email" id="email" required class="w-full px-4 py-2 rounded-xl border border-gray-500 bg-transparent text-white focus:ring-2 focus:ring-pink-400 focus:outline-none">
+      </div>
+
+      <!-- Password -->
+      <div class="relative">
+        <label class="block text-white text-sm mb-1">Password</label>
+        <input type="password" id="password" required class="w-full px-4 py-2 rounded-xl border border-gray-500 bg-transparent text-white focus:ring-2 focus:ring-pink-400 focus:outline-none">
+        <button type="button" id="togglePassword" class="absolute right-3 top-9 text-gray-300 hover:text-white">👁</button>
+      </div>
+
+      <!-- Button -->
+      <button type="submit" class="w-full bg-gradient-to-r from-pink-500 to-purple-600 text-white font-semibold py-2 rounded-xl shadow-lg transform transition duration-300 hover:scale-105 hover:shadow-pink-500/50">
+        Login
+      </button>
+    </form>
+
+    <p class="text-center text-sm text-gray-300 mt-6">Don’t have an account? 
+      <a href="#" class="text-pink-400 hover:underline">Sign up</a>
+    </p>
+  </div>
+
+  <script>
+    // Animate card entrance
+    gsap.to("#card", { 
+      duration: 1.2, 
+      opacity: 1, 
+      scale: 1, 
+      ease: "elastic.out(1, 0.6)" 
+    });
+
+    // Floating particles generator
+    const particleContainer = document.getElementById("particles");
+    for (let i = 0; i < 25; i++) {
+      let p = document.createElement("div");
+      p.classList.add("particle");
+      p.style.left = Math.random() * 100 + "vw";
+      p.style.animationDuration = 5 + Math.random() * 10 + "s";
+      p.style.animationDelay = Math.random() * 5 + "s";
+      particleContainer.appendChild(p);
+    }
+
+    // Toggle password visibility
+    const togglePassword = document.getElementById("togglePassword");
+    const passwordField = document.getElementById("password");
+    togglePassword.addEventListener("click", () => {
+      if (passwordField.type === "password") {
+        passwordField.type = "text";
+        togglePassword.textContent = "🙈";
+      } else {
+        passwordField.type = "password";
+        togglePassword.textContent = "👁";
+      }
+    });
+
+    // Simple form validation
+    document.getElementById("loginForm").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      const pass = passwordField.value;
+      if(email && pass){
+        alert("Login Successful 🚀");
+      } else {
+        alert("Please fill all fields!");
+      }
+    });
+  </script>
+
+</body>
+  </html>
